@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/filter.css">
+<link rel="stylesheet" href="css/nouislider.min.css">
+        <style>
+        #map {
+            width: 1349px;
+            height: 672px;
+        }
+        </style>
+        <title>RECLASIFICACIÓN DE VIAS VECINALES A DEPARTAMENTALES</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/tailDT.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/wNumb.js"></script>
+        <script src="data/vias_mtc_1.js"></script>
+        <script src="data/po_provincias_UTM_v20_2.js"></script>
+        <script src="data/po_distritos_UTM_v20_3.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[-9.581789936606272,-83.75891713229599],[-3.262338447574458,-71.10987748021935]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_OSMStandard_0');
+        map.getPane('pane_OSMStandard_0').style.zIndex = 400;
+        var layer_OSMStandard_0 = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OSMStandard_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OSMStandard_0;
+        map.addLayer(layer_OSMStandard_0);
+        function pop_vias_mtc_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['IMAGEN'] !== null ? '<img src="images/' + String(feature.properties['IMAGEN']).replace(/[\\\/:]/g, '_').trim() + '">' : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_vias_mtc_1_0(feature) {
+            switch(String(feature.properties['q2wHide_cod'])) {
+                case '1216':
+                    return {
+                pane: 'pane_vias_mtc_1',
+                opacity: 1,
+                color: 'rgba(132,27,252,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case '1409':
+                    return {
+                pane: 'pane_vias_mtc_1',
+                opacity: 1,
+                color: 'rgba(243,115,191,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'CA_-1254':
+                    return {
+                pane: 'pane_vias_mtc_1',
+                opacity: 1,
+                color: 'rgba(13,181,252,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'CA_1427':
+                    return {
+                pane: 'pane_vias_mtc_1',
+                opacity: 1,
+                color: 'rgba(199,0,4,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'CA-1066-CA1070':
+                    return {
+                pane: 'pane_vias_mtc_1',
+                opacity: 1,
+                color: 'rgba(0,0,4,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'CA-1192,_CA-1183':
+                    return {
+                pane: 'pane_vias_mtc_1',
+                opacity: 1,
+                color: 'rgba(0,188,4,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'CA-1306':
+                    return {
+                pane: 'pane_vias_mtc_1',
+                opacity: 1,
+                color: 'rgba(123,123,123,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'CA-1311':
+                    return {
+                pane: 'pane_vias_mtc_1',
+                opacity: 1,
+                color: 'rgba(213,180,60,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'CA-1437_,_1444':
+                    return {
+                pane: 'pane_vias_mtc_1',
+                opacity: 1,
+                color: 'rgba(255,158,23,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'CA-1511':
+                    return {
+                pane: 'pane_vias_mtc_1',
+                opacity: 1,
+                color: 'rgba(0,29,255,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'CA-1624,_1630,_1487,_1483,_1484,_1486,_1464':
+                    return {
+                pane: 'pane_vias_mtc_1',
+                opacity: 1,
+                color: 'rgba(145,82,45,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'CA-1668,_1655,_1653,_1652':
+                    return {
+                pane: 'pane_vias_mtc_1',
+                opacity: 1,
+                color: 'rgba(255,247,84,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'CA-521':
+                    return {
+                pane: 'pane_vias_mtc_1',
+                opacity: 1,
+                color: 'rgba(246,6,130,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'CA-666':
+                    return {
+                pane: 'pane_vias_mtc_1',
+                opacity: 1,
+                color: 'rgba(91,251,58,0.4470588235294118)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'CA-862':
+                    return {
+                pane: 'pane_vias_mtc_1',
+                opacity: 1,
+                color: 'rgba(181,0,100,0.9764705882352941)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'CA-878':
+                    return {
+                pane: 'pane_vias_mtc_1',
+                opacity: 1,
+                color: 'rgba(255,31,91,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'CA-961,962,979,983,988':
+                    return {
+                pane: 'pane_vias_mtc_1',
+                opacity: 1,
+                color: 'rgba(255,226,109,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'CA-966':
+                    return {
+                pane: 'pane_vias_mtc_1',
+                opacity: 1,
+                color: 'rgba(223,192,234,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_vias_mtc_1',
+                opacity: 1,
+                color: 'rgba(0,68,27,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_vias_mtc_1');
+        map.getPane('pane_vias_mtc_1').style.zIndex = 401;
+        map.getPane('pane_vias_mtc_1').style['mix-blend-mode'] = 'normal';
+        var layer_vias_mtc_1 = new L.geoJson(json_vias_mtc_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_vias_mtc_1',
+            layerName: 'layer_vias_mtc_1',
+            pane: 'pane_vias_mtc_1',
+            onEachFeature: pop_vias_mtc_1,
+            style: style_vias_mtc_1_0,
+        });
+        bounds_group.addLayer(layer_vias_mtc_1);
+        map.addLayer(layer_vias_mtc_1);
+        function pop_po_provincias_UTM_v20_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PROV_ID'] !== null ? autolinker.link(feature.properties['PROV_ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PROVINCIA'] !== null ? autolinker.link(feature.properties['PROVINCIA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['AREA_Km2'] !== null ? autolinker.link(feature.properties['AREA_Km2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['AREA_Ha'] !== null ? autolinker.link(feature.properties['AREA_Ha'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_po_provincias_UTM_v20_2_0() {
+            return {
+                pane: 'pane_po_provincias_UTM_v20_2',
+                opacity: 1,
+                color: 'rgba(0,68,27,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_po_provincias_UTM_v20_2');
+        map.getPane('pane_po_provincias_UTM_v20_2').style.zIndex = 402;
+        map.getPane('pane_po_provincias_UTM_v20_2').style['mix-blend-mode'] = 'normal';
+        var layer_po_provincias_UTM_v20_2 = new L.geoJson(json_po_provincias_UTM_v20_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_po_provincias_UTM_v20_2',
+            layerName: 'layer_po_provincias_UTM_v20_2',
+            pane: 'pane_po_provincias_UTM_v20_2',
+            onEachFeature: pop_po_provincias_UTM_v20_2,
+            style: style_po_provincias_UTM_v20_2_0,
+        });
+        bounds_group.addLayer(layer_po_provincias_UTM_v20_2);
+        map.addLayer(layer_po_provincias_UTM_v20_2);
+        function pop_po_distritos_UTM_v20_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['IDDPTO'] !== null ? autolinker.link(feature.properties['IDDPTO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DEPART'] !== null ? autolinker.link(feature.properties['DEPART'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PROV_ID'] !== null ? autolinker.link(feature.properties['PROV_ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PROVINCIA'] !== null ? autolinker.link(feature.properties['PROVINCIA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DIST_ID'] !== null ? autolinker.link(feature.properties['DIST_ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DISTRITO'] !== null ? autolinker.link(feature.properties['DISTRITO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['AREA_Km2'] !== null ? autolinker.link(feature.properties['AREA_Km2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['AREA_Ha'] !== null ? autolinker.link(feature.properties['AREA_Ha'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_po_distritos_UTM_v20_3_0() {
+            return {
+                pane: 'pane_po_distritos_UTM_v20_3',
+                opacity: 1,
+                color: 'rgba(227,26,28,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_po_distritos_UTM_v20_3');
+        map.getPane('pane_po_distritos_UTM_v20_3').style.zIndex = 403;
+        map.getPane('pane_po_distritos_UTM_v20_3').style['mix-blend-mode'] = 'normal';
+        var layer_po_distritos_UTM_v20_3 = new L.geoJson(json_po_distritos_UTM_v20_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_po_distritos_UTM_v20_3',
+            layerName: 'layer_po_distritos_UTM_v20_3',
+            pane: 'pane_po_distritos_UTM_v20_3',
+            onEachFeature: pop_po_distritos_UTM_v20_3,
+            style: style_po_distritos_UTM_v20_3_0,
+        });
+        bounds_group.addLayer(layer_po_distritos_UTM_v20_3);
+        map.addLayer(layer_po_distritos_UTM_v20_3);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>RECLASIFICACIÓN DE VIAS VECINALES A DEPARTAMENTALES</h2>';
+            };
+            title.addTo(map);
+        setBounds();
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className="row";
+        row.id="all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className="col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className="col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = {"PROV_ID": "int","DIST_ID": "int","AREA_Ha": "real","PROVINCIA": "str","DEPART": "str","IDDPTO": "str","IMAGEN": "str"};
+        function filterFunc() {
+          map.eachLayer(function(lyr){
+          if ("options" in lyr && "dataVar" in lyr["options"]){
+            features = this[lyr["options"]["dataVar"]].features.slice(0);
+            try{
+              for (key in Filters){
+                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                if (Filters[key] == "str" || Filters[key] == "bool"){
+                  var selection = [];
+                  var options = document.getElementById("sel_" + keyS).options
+                  for (var i=0; i < options.length; i++) {
+                    if (options[i].selected) selection.push(options[i].value);
+                  }
+                    try{
+                      if (key in features[0].properties){
+                        for (i = features.length - 1;
+                          i >= 0; --i){
+                          if (selection.indexOf(
+                          features[i].properties[key])<0
+                          && selection.length>0) {
+                          features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                  }
+                }
+                if (Filters[key] == "int"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (parseInt(features[i].properties[key])
+                          < sliderVals[0]
+                          || parseInt(features[i].properties[key])
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "real"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (features[i].properties[key]
+                          < sliderVals[0]
+                          || features[i].properties[key]
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "date"
+                  || Filters[key] == "datetime"
+                  || Filters[key] == "time"){
+                  try{
+                    if (key in features[0].properties){
+                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                      startdate = document.getElementById("dat_" +
+                        HTMLkey + "_date1").value.replace(" ", "T");
+                      enddate = document.getElementById("dat_" +
+                        HTMLkey + "_date2").value.replace(" ", "T");
+                      for (i = features.length - 1; i >= 0; --i){
+                        if (features[i].properties[key] < startdate
+                          || features[i].properties[key] > enddate){
+                          features.splice(i,1);
+                        }
+                      }
+                    }
+                  } catch(err){
+                  }
+                }
+              }
+            } catch(err){
+            }
+          this[lyr["options"]["layerName"]].clearLayers();
+          this[lyr["options"]["layerName"]].addData(features);
+          }
+          })
+        }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_PROV_ID = document.createElement("div");
+            div_PROV_ID.id = "div_PROV_ID";
+            div_PROV_ID.className = "slider";
+            document.getElementById("menu").appendChild(div_PROV_ID);
+            var lab_PROV_ID = document.createElement('div');
+            lab_PROV_ID.innerHTML  = 'PROV_ID: <span id="val_PROV_ID"></span>';
+            lab_PROV_ID.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_PROV_ID);
+            var reset_PROV_ID = document.createElement('div');
+            reset_PROV_ID.innerHTML = 'clear filter';
+            reset_PROV_ID.className = 'filterlabel';
+            lab_PROV_ID.className = 'filterlabel';
+            reset_PROV_ID.onclick = function() {
+                sel_PROV_ID.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_PROV_ID);
+            var sel_PROV_ID = document.getElementById('div_PROV_ID');
+            noUiSlider.create(sel_PROV_ID, {
+                connect: true,
+                start: [601, 613],
+                step: 1,
+                format: wNumb({
+                    decimals: 0,
+                    }),
+                range: {
+                min: 601,
+                max: 613
+                }
+            });
+            sel_PROV_ID.noUiSlider.on('update', function (values) {
+            filterVals =[];
+            for (value in values){
+            filterVals.push(parseInt(value))
+            }
+            val_PROV_ID = document.getElementById('val_PROV_ID');
+            val_PROV_ID.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_DIST_ID = document.createElement("div");
+            div_DIST_ID.id = "div_DIST_ID";
+            div_DIST_ID.className = "slider";
+            document.getElementById("menu").appendChild(div_DIST_ID);
+            var lab_DIST_ID = document.createElement('div');
+            lab_DIST_ID.innerHTML  = 'DIST_ID: <span id="val_DIST_ID"></span>';
+            lab_DIST_ID.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_DIST_ID);
+            var reset_DIST_ID = document.createElement('div');
+            reset_DIST_ID.innerHTML = 'clear filter';
+            reset_DIST_ID.className = 'filterlabel';
+            lab_DIST_ID.className = 'filterlabel';
+            reset_DIST_ID.onclick = function() {
+                sel_DIST_ID.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_DIST_ID);
+            var sel_DIST_ID = document.getElementById('div_DIST_ID');
+            noUiSlider.create(sel_DIST_ID, {
+                connect: true,
+                start: [60101, 61311],
+                step: 1,
+                format: wNumb({
+                    decimals: 0,
+                    }),
+                range: {
+                min: 60101,
+                max: 61311
+                }
+            });
+            sel_DIST_ID.noUiSlider.on('update', function (values) {
+            filterVals =[];
+            for (value in values){
+            filterVals.push(parseInt(value))
+            }
+            val_DIST_ID = document.getElementById('val_DIST_ID');
+            val_DIST_ID.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_AREA_Ha = document.createElement("div");
+            div_AREA_Ha.id = "div_AREA_Ha";
+            div_AREA_Ha.className = "slider";
+            document.getElementById("menu").appendChild(div_AREA_Ha);
+            var lab_AREA_Ha = document.createElement('div');
+            lab_AREA_Ha.innerHTML  = 'AREA_Ha: <span id="val_AREA_Ha"></span>';
+            lab_AREA_Ha.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_AREA_Ha);
+            var reset_AREA_Ha = document.createElement('div');
+            reset_AREA_Ha.innerHTML = 'clear filter';
+            reset_AREA_Ha.className = 'filterlabel';
+            lab_AREA_Ha.className = 'filterlabel';
+            reset_AREA_Ha.onclick = function() {
+                sel_AREA_Ha.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_AREA_Ha);
+            var sel_AREA_Ha = document.getElementById('div_AREA_Ha');
+            noUiSlider.create(sel_AREA_Ha, {
+                connect: true,
+                start: [853.71, 506385.65],
+                range: {
+                min: 853.71,
+                max: 506385.65
+                }
+            });
+            sel_AREA_Ha.noUiSlider.on('update', function (values) {
+            val_AREA_Ha = document.getElementById('val_AREA_Ha');
+            val_AREA_Ha.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_PROVINCIA = document.createElement('div');
+            div_PROVINCIA.id = "div_PROVINCIA";
+            div_PROVINCIA.className= "filterselect";
+            document.getElementById("menu").appendChild(div_PROVINCIA);
+            sel_PROVINCIA = document.createElement('select');
+            sel_PROVINCIA.multiple = true;
+            sel_PROVINCIA.size = 10;
+            sel_PROVINCIA.id = "sel_PROVINCIA";
+            var PROVINCIA_options_str = "<option value='' unselected></option>";
+            sel_PROVINCIA.onchange = function(){filterFunc()};
+            PROVINCIA_options_str  += '<option value="Cajabamba">Cajabamba</option>';
+            PROVINCIA_options_str  += '<option value="Cajamarca">Cajamarca</option>';
+            PROVINCIA_options_str  += '<option value="Celendín">Celendín</option>';
+            PROVINCIA_options_str  += '<option value="Chota">Chota</option>';
+            PROVINCIA_options_str  += '<option value="Contumazá">Contumazá</option>';
+            PROVINCIA_options_str  += '<option value="Cutervo">Cutervo</option>';
+            PROVINCIA_options_str  += '<option value="Hualgayoc">Hualgayoc</option>';
+            PROVINCIA_options_str  += '<option value="Jaén">Jaén</option>';
+            PROVINCIA_options_str  += '<option value="San Ignacio">San Ignacio</option>';
+            PROVINCIA_options_str  += '<option value="San Marcos">San Marcos</option>';
+            PROVINCIA_options_str  += '<option value="San Miguel">San Miguel</option>';
+            PROVINCIA_options_str  += '<option value="San Pablo">San Pablo</option>';
+            PROVINCIA_options_str  += '<option value="Santa Cruz">Santa Cruz</option>';
+            sel_PROVINCIA.innerHTML = PROVINCIA_options_str;
+            div_PROVINCIA.appendChild(sel_PROVINCIA);
+            var lab_PROVINCIA = document.createElement('div');
+            lab_PROVINCIA.innerHTML = 'PROVINCIA';
+            lab_PROVINCIA.className = 'filterlabel';
+            div_PROVINCIA.appendChild(lab_PROVINCIA);
+            var reset_PROVINCIA = document.createElement('div');
+            reset_PROVINCIA.innerHTML = 'clear filter';
+            reset_PROVINCIA.className = 'filterlabel';
+            reset_PROVINCIA.onclick = function() {
+                var options = document.getElementById("sel_PROVINCIA").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_PROVINCIA.appendChild(reset_PROVINCIA);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_DEPART = document.createElement('div');
+            div_DEPART.id = "div_DEPART";
+            div_DEPART.className= "filterselect";
+            document.getElementById("menu").appendChild(div_DEPART);
+            sel_DEPART = document.createElement('select');
+            sel_DEPART.multiple = true;
+            sel_DEPART.size = 1;
+            sel_DEPART.id = "sel_DEPART";
+            var DEPART_options_str = "<option value='' unselected></option>";
+            sel_DEPART.onchange = function(){filterFunc()};
+            DEPART_options_str  += '<option value="CAJAMARCA">CAJAMARCA</option>';
+            sel_DEPART.innerHTML = DEPART_options_str;
+            div_DEPART.appendChild(sel_DEPART);
+            var lab_DEPART = document.createElement('div');
+            lab_DEPART.innerHTML = 'DEPART';
+            lab_DEPART.className = 'filterlabel';
+            div_DEPART.appendChild(lab_DEPART);
+            var reset_DEPART = document.createElement('div');
+            reset_DEPART.innerHTML = 'clear filter';
+            reset_DEPART.className = 'filterlabel';
+            reset_DEPART.onclick = function() {
+                var options = document.getElementById("sel_DEPART").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_DEPART.appendChild(reset_DEPART);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_IDDPTO = document.createElement('div');
+            div_IDDPTO.id = "div_IDDPTO";
+            div_IDDPTO.className= "filterselect";
+            document.getElementById("menu").appendChild(div_IDDPTO);
+            sel_IDDPTO = document.createElement('select');
+            sel_IDDPTO.multiple = true;
+            sel_IDDPTO.size = 1;
+            sel_IDDPTO.id = "sel_IDDPTO";
+            var IDDPTO_options_str = "<option value='' unselected></option>";
+            sel_IDDPTO.onchange = function(){filterFunc()};
+            IDDPTO_options_str  += '<option value="06">06</option>';
+            sel_IDDPTO.innerHTML = IDDPTO_options_str;
+            div_IDDPTO.appendChild(sel_IDDPTO);
+            var lab_IDDPTO = document.createElement('div');
+            lab_IDDPTO.innerHTML = 'IDDPTO';
+            lab_IDDPTO.className = 'filterlabel';
+            div_IDDPTO.appendChild(lab_IDDPTO);
+            var reset_IDDPTO = document.createElement('div');
+            reset_IDDPTO.innerHTML = 'clear filter';
+            reset_IDDPTO.className = 'filterlabel';
+            reset_IDDPTO.onclick = function() {
+                var options = document.getElementById("sel_IDDPTO").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_IDDPTO.appendChild(reset_IDDPTO);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_IMAGEN = document.createElement('div');
+            div_IMAGEN.id = "div_IMAGEN";
+            div_IMAGEN.className= "filterselect";
+            document.getElementById("menu").appendChild(div_IMAGEN);
+            sel_IMAGEN = document.createElement('select');
+            sel_IMAGEN.multiple = true;
+            sel_IMAGEN.size = 10;
+            sel_IMAGEN.id = "sel_IMAGEN";
+            var IMAGEN_options_str = "<option value='' unselected></option>";
+            sel_IMAGEN.onchange = function(){filterFunc()};
+            IMAGEN_options_str  += '<option value="C:\Users\dhuaman\Desktop\CA - 1066.PNG">C:\Users\dhuaman\Desktop\CA - 1066.PNG</option>';
+            IMAGEN_options_str  += '<option value="C:\Users\dhuaman\Desktop\CA - 1254.PNG">C:\Users\dhuaman\Desktop\CA - 1254.PNG</option>';
+            IMAGEN_options_str  += '<option value="C:\Users\dhuaman\Desktop\CA - 1306.PNG">C:\Users\dhuaman\Desktop\CA - 1306.PNG</option>';
+            IMAGEN_options_str  += '<option value="C:\Users\dhuaman\Desktop\CA - 1311.PNG">C:\Users\dhuaman\Desktop\CA - 1311.PNG</option>';
+            IMAGEN_options_str  += '<option value="C:\Users\dhuaman\Desktop\CA - 1427.PNG">C:\Users\dhuaman\Desktop\CA - 1427.PNG</option>';
+            IMAGEN_options_str  += '<option value="C:\Users\dhuaman\Desktop\CA - 1437.PNG">C:\Users\dhuaman\Desktop\CA - 1437.PNG</option>';
+            IMAGEN_options_str  += '<option value="C:\Users\dhuaman\Desktop\CA -1409.PNG">C:\Users\dhuaman\Desktop\CA -1409.PNG</option>';
+            IMAGEN_options_str  += '<option value="C:\Users\dhuaman\Desktop\CA-1216.PNG">C:\Users\dhuaman\Desktop\CA-1216.PNG</option>';
+            IMAGEN_options_str  += '<option value="C:\Users\dhuaman\Desktop\CA-1624.PNG">C:\Users\dhuaman\Desktop\CA-1624.PNG</option>';
+            IMAGEN_options_str  += '<option value="C:\Users\dhuaman\Desktop\CA-1668.PNG">C:\Users\dhuaman\Desktop\CA-1668.PNG</option>';
+            IMAGEN_options_str  += '<option value="C:\Users\dhuaman\Desktop\CA-521.PNG">C:\Users\dhuaman\Desktop\CA-521.PNG</option>';
+            IMAGEN_options_str  += '<option value="C:\Users\dhuaman\Desktop\CA-666.PNG">C:\Users\dhuaman\Desktop\CA-666.PNG</option>';
+            IMAGEN_options_str  += '<option value="C:\Users\dhuaman\Desktop\CA-862.PNG">C:\Users\dhuaman\Desktop\CA-862.PNG</option>';
+            IMAGEN_options_str  += '<option value="C:\Users\dhuaman\Desktop\CA-878.PNG">C:\Users\dhuaman\Desktop\CA-878.PNG</option>';
+            IMAGEN_options_str  += '<option value="C:\Users\dhuaman\Desktop\CA-961.PNG">C:\Users\dhuaman\Desktop\CA-961.PNG</option>';
+            IMAGEN_options_str  += '<option value="C:\Users\dhuaman\Desktop\ca - 966.PNG">C:\Users\dhuaman\Desktop\ca - 966.PNG</option>';
+            IMAGEN_options_str  += '<option value="C:\Users\dhuaman\Desktop\ca-1192.PNG">C:\Users\dhuaman\Desktop\ca-1192.PNG</option>';
+            IMAGEN_options_str  += '<option value="C:\Users\dhuaman\Desktop\ca-1511.PNG">C:\Users\dhuaman\Desktop\ca-1511.PNG</option>';
+            sel_IMAGEN.innerHTML = IMAGEN_options_str;
+            div_IMAGEN.appendChild(sel_IMAGEN);
+            var lab_IMAGEN = document.createElement('div');
+            lab_IMAGEN.innerHTML = 'IMAGEN';
+            lab_IMAGEN.className = 'filterlabel';
+            div_IMAGEN.appendChild(lab_IMAGEN);
+            var reset_IMAGEN = document.createElement('div');
+            reset_IMAGEN.innerHTML = 'clear filter';
+            reset_IMAGEN.className = 'filterlabel';
+            reset_IMAGEN.onclick = function() {
+                var options = document.getElementById("sel_IMAGEN").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_IMAGEN.appendChild(reset_IMAGEN);
+        </script>
+    </body>
+</html>
